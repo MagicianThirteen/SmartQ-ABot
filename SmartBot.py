@@ -27,3 +27,5 @@ class QAResponse(BaseModel):
         description="Indicates whether sources are needed for the answer.",
         default=False,
     )
+
+#建个类来调用方法
