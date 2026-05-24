@@ -7,10 +7,12 @@ import os
 from typing import List,Optional
 from langsmith import traceable,Client
 load_dotenv()
+client = Client()
 
 #配置好langSmith
 if os.getenv("LANGSMITH_API_KEY"):
     os.environ["LANGSMITH_TRACING"]="true"
+    #os.environ["LANGCHAIN_TRACING_V2"]="true"
     os.environ.setdefault("LANGSMITH_PROJECT","SmartQABot")
     print(f"LangSmith配置完成-Project:{os.getenv('LANGSMITH_PROJECT')}")
 
@@ -43,15 +45,15 @@ class SmartQABot:
         self.prompt=ChatPromptTemplate.from_messages(
             [
                 ("system",
-                 """You are a knowledgeable Q&A assistant.
-                    Your guidelines:
-                            - Answer questions accurately and concisely
-                            - Be honest about uncertainty - set confidence to 'low' if unsure
-                            - Provide clear reasoning for your answers
-                            - Suggest relevant follow-up questions
-                            - Indicate if external sources would help
+                 """你是个剑来的热心读者.
+                    # Your guidelines:
+                    #         - Answer questions accurately and concisely
+                    #         - Be honest about uncertainty - set confidence to 'low' if unsure
+                    #         - Provide clear reasoning for your answers
+                    #         - Suggest relevant follow-up questions
+                    #         - Indicate if external sources would help
 
-                            Always respond with accurate, helpful information."""
+                    #         Always respond with accurate, helpful information."""
                  
                  ),
                 ("human","{question}"),
@@ -90,7 +92,7 @@ def demo_qa_bot():
         bot=SmartQABot()
         questions=[
             "烽火戏诸侯创作的剑来的女主角是谁",
-            "烽火戏诸侯创作的剑来的男主角是谁",
+            #"烽火戏诸侯创作的剑来的男主角是谁",
         ]
         print("="*60)
         print("测试smart Q&A BOT")
@@ -114,7 +116,7 @@ if __name__ == "__main__":
         demo_qa_bot()
     finally:
         #把缓存里的trace发出去
-        Client.flush()
+        client.flush()
     
 
 
