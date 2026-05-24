@@ -5,7 +5,7 @@ from pydantic import BaseModel,Field
 from dotenv import load_dotenv
 import os
 from typing import List,Optional
-from langsmith import traceable,client
+from langsmith import traceable,Client
 load_dotenv()
 
 #配置好langSmith
@@ -110,7 +110,11 @@ def demo_qa_bot():
             print("-" * 60)    
 
 if __name__ == "__main__":
-    demo_qa_bot()
+    try:
+        demo_qa_bot()
+    finally:
+        #把缓存里的trace发出去
+        Client.flush()
     
 
 
